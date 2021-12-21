@@ -4,7 +4,7 @@
   </div>
 
   <div class="card-body">
-    <form novalidate [formGroup]="customerForm">
+    <form novalidate [formGroup]="customerForm" (ngSubmit)="save()">
 
       <div class="form-group row mb-2">
         <label class="col-md-2 col-form-label"
@@ -14,8 +14,6 @@
                  id="firstNameId"
                  type="text"
                  placeholder="First Name (required)"
-                 required
-                 minlength="3"
                  name="firstName"
                  formControlName="firstName"
                  [ngClass]="{'is-invalid': (customerForm.get('firstName')?.touched || customerForm.get('firstName')?.dirty) && !customerForm.get('firstName')?.valid }" />
@@ -38,8 +36,6 @@
                  id="lastNameId"
                  type="text"
                  placeholder="Last Name (required)"
-                 required
-                 maxlength="50"
                  name="lastName"
                  formControlName="lastName"
                  [ngClass]="{'is-invalid': (customerForm.get('lastName')?.touched || customerForm.get('lastName')?.dirty) && !customerForm.get('lastName')?.valid }" />
@@ -62,8 +58,6 @@
                  id="emailId"
                  type="email"
                  placeholder="Email (required)"
-                 required
-                 email
                  name="email"
                  formControlName="emailAddress"
                  [ngClass]="{'is-invalid': (customerForm.get('emailAddress')?.touched || customerForm.get('emailAddress')?.dirty) && !customerForm.get('emailAddress')?.valid }" />
@@ -75,6 +69,48 @@
               Please enter a valid email address.
             </span>
           </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="emailId">Phone</label>
+        <div class="col-md-8">
+          <input class="form-control"
+
+                 placeholder="Phone"
+                 formControlName="phone"
+                 [ngClass]="{'is-invalid': (customerForm.get('phone')?.touched || customerForm.get('phone')?.dirty) && !customerForm.get('phone')?.valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="customerForm.get('phone')?.errors?.required">
+              Please enter your phone numbers.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="emailId">Contact</label>
+        <div class="col-md-8">
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     value="email"
+                     type="radio"
+                     (click)="setNotification('email')"
+                     formControlName="notification">Email
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     value="text"
+                     type="radio"
+                     (click)="setNotification('text')"
+                     formControlName="notification">Text
+            </label>
+          </div>
         </div>
       </div>
 

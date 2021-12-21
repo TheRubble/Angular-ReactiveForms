@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 import { Customer } from './customer';
 
@@ -10,27 +10,20 @@ import { Customer } from './customer';
 })
 export class CustomerComponent implements OnInit {
 
-  customerForm! : FormGroup;
+  customerForm = this.formBuilder.group(
+    {
+      firstName : [null, [Validators.required, Validators.minLength(3)]],
+      lastName : [null, [Validators.required, Validators.maxLength(50)]],
+      emailAddress : [null, [Validators.required, Validators.email]],
+      sendCatalog : true,
+      phone : null,
+      notification : 'email'
+   });
+
   customer = new Customer();
   constructor(private formBuilder : FormBuilder) { }
 
-  ngOnInit(): void {
-    // this.customerForm = new FormGroup({
-    //     firstName : new FormControl(),
-    //     lastName : new FormControl(),
-    //     emailAddress : new FormControl(),
-    //     sendCatalog : new FormControl(true)
-    //   }
-    // );
-
-    this.customerForm =  this.formBuilder.group({
-      firstName : null,
-      lastName : { value : "", disabled : false},
-      emailAddress : null,
-      sendCatalog : true
-    })
-
-  }
+  ngOnInit(): void {}
 
   save(): void {
     console.log(this.customerForm);
@@ -45,4 +38,16 @@ export class CustomerComponent implements OnInit {
       sendCatalog : false
     })
   }
+
+  setNotification(value : string) : void{
+    const phone = this.customerForm.get("phone");
+    if(value === "text"){
+      phone?.setValidators(Validators.required)
+    }
+    else{
+      phone?.clearValidators();
+    }
+    phone?.updateValueAndValidity();
+  }
+
 }
